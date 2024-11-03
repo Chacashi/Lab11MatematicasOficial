@@ -13,6 +13,10 @@ public class ButtonScene : MonoBehaviour
     {
         myButton = GetComponent<Button>();
     }
+    void start()
+    {
+        Time.timeScale = 1.0f; 
+    }
 
     private void Start()
     {
