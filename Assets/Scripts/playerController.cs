@@ -43,12 +43,14 @@ public class playerController : MonoBehaviour
     {
         ButtonUI.OnClickFinalizeInteractionUI += ActiveInput;
         ButtonUI.OnClickButtonUI += DesactiveInput;
+        ButtonMusic.OnClickButtonOpc += DesactiveInput;
     }
 
     private void OnDisable()
     {
         ButtonUI.OnClickFinalizeInteractionUI -= ActiveInput;
         ButtonUI.OnClickButtonUI -= DesactiveInput;
+        ButtonMusic.OnClickButtonOpc -= DesactiveInput;
     }
 
 
