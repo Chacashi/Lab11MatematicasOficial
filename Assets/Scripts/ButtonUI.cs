@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class ButtonUI : MonoBehaviour
 {
     [SerializeField] Button myButton;
     [SerializeField] GameObject[] arrayObjectives;
-
+    public static event Action OnClickButtonUI;
+    public static event Action OnClickFinalizeInteractionUI;
+   
 
     private void Awake()
     {
@@ -27,11 +30,14 @@ public class ButtonUI : MonoBehaviour
             {
                 arrayObjectives[i].SetActive(false);
                 Time.timeScale = 1.0f;
+                OnClickFinalizeInteractionUI?.Invoke();
+               
             }
             else
             {
                 arrayObjectives[i].SetActive(true);
                 Time.timeScale = 0.0f;
+                OnClickButtonUI?.Invoke();
             }
         }
         

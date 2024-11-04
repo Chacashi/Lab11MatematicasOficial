@@ -9,15 +9,20 @@ public class playerController : MonoBehaviour
     Rigidbody _compRigidbody;
     [SerializeField] float jumpIntensity;
     [SerializeField] float speed;
+    [SerializeField] float ImpactIntensityHorizontal;
+    [SerializeField] float ImpactIntensityVertical;
     Quaternion targetAngle_90 = Quaternion.Euler(90, 90, 0);
     Quaternion targetAngle_Minus90 = Quaternion.Euler(-90, 90, 0);
     [SerializeField] Quaternion currentAngle;
     Vector3 jumpPosition;
     public static event Action OnDestroyPlayer;
+    public static event Action OnWinPlayer;
+    PlayerInput input;
 
     private void Awake()
     {
         _compRigidbody = GetComponent<Rigidbody>();
+        input = GetComponent<PlayerInput>();
     }
     private void Start()
     {
@@ -29,8 +34,25 @@ public class playerController : MonoBehaviour
     private void FixedUpdate()
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle_90, 0.05f);
-        //_compRigidbody.AddForce(Vector3.right*speed * Time.deltaTime );
+        _compRigidbody.AddForce(Vector3.right*speed * Time.deltaTime );
     }
+
+
+
+    private void OnEnable()
+    {
+        ButtonUI.OnClickFinalizeInteractionUI += ActiveInput;
+        ButtonUI.OnClickButtonUI += DesactiveInput;
+    }
+
+    private void OnDisable()
+    {
+        ButtonUI.OnClickFinalizeInteractionUI -= ActiveInput;
+        ButtonUI.OnClickButtonUI -= DesactiveInput;
+    }
+
+
+
     public void PressLeftClick(InputAction.CallbackContext context)
     {
 
@@ -53,6 +75,7 @@ public class playerController : MonoBehaviour
     }
 
 
+
     private void OnTriggerEnter(Collider other)
     {
         if(other != null && other.gameObject.tag == "Obstacule")
@@ -60,5 +83,36 @@ public class playerController : MonoBehaviour
             Destroy(gameObject);
             OnDestroyPlayer?.Invoke();
         }
+
+        if (other != null && other.gameObject.tag == "Win")
+        {
+            Destroy(gameObject);
+            OnWinPlayer?.Invoke();
+        }
+
+        if (other != null && other.gameObject.tag == "ImpulseUp")
+        {
+            _compRigidbody.AddForce(Vector3.left * ImpactIntensityHorizontal);
+            _compRigidbody.AddForce(Vector3.up * ImpactIntensityVertical);
+        }
+        if (other != null && other.gameObject.tag == "ImpulseDown")
+        {
+            _compRigidbody.AddForce(Vector3.left * ImpactIntensityHorizontal);
+            _compRigidbody.AddForce(Vector3.down * ImpactIntensityVertical);
+        }
+
+
+
+
+    }
+
+    void DesactiveInput()
+    {
+        input.enabled = false;
+    }
+
+    void ActiveInput()
+    {
+        input.enabled = true;
     }
 }

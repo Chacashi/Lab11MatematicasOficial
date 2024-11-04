@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacule
+  - DestroyBlock
+  - ImpulseDown
+  - ImpulseUp
+  - Win
   layers:
   - Default
   - TransparentFX

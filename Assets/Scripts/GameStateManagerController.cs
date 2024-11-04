@@ -11,22 +11,24 @@ public class GameStateManagerController : MonoBehaviour
 
     private void OnEnable()
     {
-        playerController.OnDestroyPlayer += Win;
+        playerController.OnWinPlayer += Win;
         playerController.OnDestroyPlayer += Lose;
     }
     private void OnDisable()
     {
-        playerController.OnDestroyPlayer -= Win;
+        playerController.OnWinPlayer -= Win;
         playerController.OnDestroyPlayer -= Lose;
     }
 
     void Win()
     {
-        PanelLose.SetActive(true);
+        Time.timeScale = 0.0f;
+        PanelWin.SetActive(true);
     }
 
     void Lose()
     {
+        Time.timeScale = 0.0f;
         PanelLose.SetActive(true);
     }
 }

@@ -26,5 +26,6 @@ public class ButtonScene : MonoBehaviour
     void ChangueScene()
     {
         SceneManager.LoadScene(newScene);
+        Time.timeScale = 1.0f;
     }
 }
